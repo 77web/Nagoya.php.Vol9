@@ -13,7 +13,7 @@ class ElementFactory
         $element = new Element();
         $element->id = $config['id'];
         $element->caption = $config['value'];
-        $element->parentId = $config['parent'];
+        $element->parentId = $config['parent_id'];
 
         return $element;
     }
