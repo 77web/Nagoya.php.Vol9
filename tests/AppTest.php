@@ -158,10 +158,38 @@ class AppTest extends \PHPUnit_Framework_TestCase
                 'value' => '子2-3',
             ],
         ];
+        $data3 = [
+            [
+                'id' => 1,
+                'parent_id' => 0,
+                'value' => '親1',
+            ],
+            [
+                'id' => 3,
+                'parent_id' => 1,
+                'value' => '子1-1',
+            ],
+            [
+                'id' => 4,
+                'parent_id' => 1,
+                'value' => '子1-2',
+            ],
+            [
+                'id' => 5,
+                'parent_id' => 2,
+                'value' => '子2-1',
+            ],
+            [
+                'id' => 2,
+                'parent_id' => 0,
+                'value' => '親2',
+            ],
+        ];
 
         return [
             [$data1, 'data1'],
             [$data2, 'data2'],
+            [$data3, 'data1'], // いじわるデータ
         ];
     }
 }
