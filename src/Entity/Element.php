@@ -22,11 +22,6 @@ class Element
     public $parentId;
 
     /**
-     * @var Element
-     */
-    public $parent;
-
-    /**
      * @var Element[]
      */
     public $children;
