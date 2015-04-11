@@ -4,6 +4,7 @@
 namespace Nagoya\Mondai9;
 
 
+use Nagoya\Mondai9\OutputFormatter\CliOutputFormatter;
 use Nagoya\Mondai9\OutputFormatter\HtmlOutputFormatter;
 
 class AppTest extends \PHPUnit_Framework_TestCase
@@ -16,19 +17,37 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function test_html(array $data, $expectedOutputPath)
     {
         $app = new App(new ElementFactory(), new TreeBuilder());
-        $app->setoutputFormatter(new HtmlOutputFormatter());
+        $app->setOutputFormatter(new HtmlOutputFormatter());
         $output = $app->run($data);
 
-        $this->assertEqualsFile($expectedOutputPath, $output);
+        $this->assertEqualsFile($expectedOutputPath.'_html_output.txt', $output, true);
+    }
+
+    /**
+     * @param array $data
+     * @param string $expectedOutputPath
+     * @dataProvider provideData
+     */
+    public function test_cli(array $data, $expectedOutputPath)
+    {
+        $app = new App(new ElementFactory(), new TreeBuilder());
+        $app->setOutputFormatter(new CliOutputFormatter());
+        $output = $app->run($data);
+
+        $this->assertEqualsFile($expectedOutputPath.'_cli_output.txt', $output);
     }
 
     /**
      * @param string $expectPath
      * @param string $content
+     * @param bool $ignoreIndent
      */
-    private function assertEqualsFile($expectPath, $content)
+    private function assertEqualsFile($expectPath, $content, $ignoreIndent = false)
     {
-        $expect = preg_replace('/[\r\n]+\s*/u', '', file_get_contents(__DIR__.'/data/'.$expectPath));
+        $expect = file_get_contents(__DIR__.'/data/'.$expectPath);
+        if ($ignoreIndent) {
+            $expect = preg_replace('/[\r\n]+\s*/u', '', $expect);
+        }
 
         $this->assertEquals($expect, $content);
     }
@@ -141,8 +160,8 @@ class AppTest extends \PHPUnit_Framework_TestCase
         ];
 
         return [
-            [$data1, 'data1_output.txt'],
-            [$data2, 'data2_output.txt'],
+            [$data1, 'data1'],
+            [$data2, 'data2'],
         ];
     }
 }
